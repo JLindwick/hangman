@@ -1,5 +1,4 @@
 import random
-from collections import Counter
 def getWord():
     words = [
     "apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew",
@@ -37,14 +36,20 @@ def updateGuess(guess,word,state):
 
 def hangmanGame():
     gameWord = getWord()
+    incorrectAttempts = 0
     state = []
     for i in gameWord:
         state.append("-")
     print(state)
     while "-" in state:
         guess = input("Input a letter to guess: ")
-        updateGuess(guess,gameWord,state)
-        print(state)
+        if guess in gameWord:
+            updateGuess(guess,gameWord,state)
+            print(state)
+        else:
+            print(state)
+            incorrectAttempts += 1
+            print(f"Incorrect number of incorrect guesses: {incorrectAttempts}")
     if "-" not in state:
-        print("You Win!!")
+        print(f"You Win!! Number of incorrect attempts {incorrectAttempts}")
 hangmanGame()
