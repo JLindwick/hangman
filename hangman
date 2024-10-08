@@ -26,7 +26,7 @@ def findIndex(array,target):
             indexes.append(index)
     return indexes
 
-def updateGuess(guess,word,state):
+def updateHiddenWord(guess,word,state):
     wordLocations = []
     if guess in word:
         wordLocations = findIndex(word,guess)
@@ -34,22 +34,31 @@ def updateGuess(guess,word,state):
             state[i] = guess
     return state
 
-def hangmanGame():
+def displayProgress(state):
+    print(state)
+
+def countIncorrectGuesses(state):
+        print(state)
+        incorrectAttempts += 1
+        print(f"Incorrect number of incorrect guesses: {incorrectAttempts}")
+
+def checkWin(state,attempts):
+        if "-" not in state:
+            print(f"You Win!!")
+
+def initializeGame():
     gameWord = getWord()
     incorrectAttempts = 0
     state = []
     for i in gameWord:
         state.append("-")
-    print(state)
+    displayProgress(state)
     while "-" in state:
         guess = input("Input a letter to guess: ")
         if guess in gameWord:
-            updateGuess(guess,gameWord,state)
+            updateHiddenWord(guess,gameWord,state)
             print(state)
         else:
-            print(state)
-            incorrectAttempts += 1
-            print(f"Incorrect number of incorrect guesses: {incorrectAttempts}")
-    if "-" not in state:
-        print(f"You Win!! Number of incorrect attempts {incorrectAttempts}")
-hangmanGame()
+            countIncorrectGuesses(state)
+        checkWin(state,incorrectAttempts)
+initializeGame()
