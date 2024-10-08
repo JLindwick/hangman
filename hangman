@@ -40,7 +40,7 @@ def displayProgress(state):
 def countIncorrectGuesses(state,incorrectAttempts):
         print(state)
         incorrectAttempts += 1
-        print(f"Incorrect number of incorrect guesses: {incorrectAttempts}")
+        print(f"Incorrect number of guesses: {incorrectAttempts}")
 
 def checkWin(state,attempts):
         if "-" not in state and attempts < 6:
