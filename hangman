@@ -41,6 +41,7 @@ def countIncorrectGuesses(state,incorrectAttempts):
         print(state)
         incorrectAttempts += 1
         print(f"Incorrect number of guesses: {incorrectAttempts}")
+        return incorrectAttempts
 
 def checkWin(state,attempts):
         if "-" not in state and attempts < 6:
@@ -63,6 +64,6 @@ def initializeGame():
             updateHiddenWord(guess,gameWord,state)
             print(state)
         else:
-            countIncorrectGuesses(state,incorrectAttempts)
+            incorrectAttempts = countIncorrectGuesses(state,incorrectAttempts)
         checkWin(state,incorrectAttempts)
 initializeGame()
