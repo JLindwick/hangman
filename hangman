@@ -1,5 +1,5 @@
 import random
-
+from collections import Counter
 def getWord():
     words = [
     "apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew",
@@ -20,10 +20,19 @@ def getWord():
     myWordSplit = list(myRandomWord)
     return myWordSplit
 
+def findIndex(array,target):
+    indexes = []
+    for index, char in enumerate(array):
+        if char == target:
+            indexes.append(index)
+    return indexes
+
 def updateGuess(guess,word,state):
+    wordLocations = []
     if guess in word:
-        myGuessPosition = word.index(guess)
-        state[myGuessPosition] = guess
+        wordLocations = findIndex(word,guess)
+        for i in wordLocations:
+            state[i] = guess
     return state
 
 def hangmanGame():
@@ -32,7 +41,10 @@ def hangmanGame():
     for i in gameWord:
         state.append("-")
     print(state)
-    guess = input("Input a letter to guess: ")
-    updateGuess(guess,gameWord,state)
-    print(state)
+    while "-" in state:
+        guess = input("Input a letter to guess: ")
+        updateGuess(guess,gameWord,state)
+        print(state)
+    if "-" not in state:
+        print("You Win!!")
 hangmanGame()
