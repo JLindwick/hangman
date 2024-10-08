@@ -57,7 +57,7 @@ def initializeGame():
     for i in gameWord:
         state.append("-")
     displayProgress(state)
-    while "-" in state:
+    while "-" in state and incorrectAttempts < 6:
         guess = input("Input a letter to guess: ")
         if guess in gameWord:
             updateHiddenWord(guess,gameWord,state)
