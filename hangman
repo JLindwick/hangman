@@ -1,70 +1,138 @@
+#Hangman game by Isadora and Justine: 
+
 import random
+import string  # to check if a character is a valid English letter.
+
+# Welcome message for the user:
+def welcome_message():
+    print(r"""
+  -----
+  |   |
+  O   |
+ ---  |
+/ | \ |
+  |   |
+ ---  |
+/   \ |
+|   | |
+      |
+-------
+    """)
+    
+    print(r"""
+  _    _          _   _  _____ __  __          _   _ 
+ | |  | |   /\   | \ | |/ ____|  \/  |   /\   | \ | |
+ | |__| |  /  \  |  \| | |  __| \  / |  /  \  |  \| |
+ |  __  | / /\ \ | . ` | | |_ | |\/| | / /\ \ | . ` |
+ | |  | |/ ____ \| |\  | |__| | |  | |/ ____ \| |\  |
+ |_|  |_/_/    \_\_| \_|\_____|_|  |_/_/    \_\_| \_|
+                                                    
+                Welcome to Hangman!               
+    """)
+
+
+# Creating a list of words for Python to choose randomly.
 def getWord():
     words = [
-    "apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew",
-    "kiwi", "lemon", "mango", "nectarine", "orange", "papaya", "quince", "raspberry",
-    "strawberry", "tangerine", "ugli", "vanilla", "watermelon", "apricot", "blueberry",
-    "cantaloupe", "dragonfruit", "eggplant", "fig", "guava", "huckleberry", "jalapeno",
-    "kumquat", "lime", "melon", "nectar", "olive", "peach", "pear", "plum", "quinoa",
-    "rhubarb", "spinach", "tomato", "turnip", "zucchini", "artichoke", "broccoli",
-    "carrot", "daikon", "endive", "fennel", "garlic", "horseradish", "jalapeno", 
-    "kale", "leek", "mushroom", "navy", "onion", "parsley", "quinoa", "radish",
-    "squash", "thyme", "ugli", "veggie", "watercress", "yam", "zucchini", "acorn",
-    "basil", "cabbage", "dill", "eggplant", "fennel", "ginger", "haricot", "iceberg",
-    "jicama", "kohlrabi", "lima", "mint", "nutmeg", "okra", "pepper", "quash",
-    "rosemary", "sage", "tarragon", "upland", "vinegar", "wasabi", "xanadu", 
-    "yarrow", "zest", "toy", "dinner","dog","cat", "rabbit", "computer"
-]
-    myRandomWord = words[random.randint(0,99)]
+        "apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew",
+        "kiwi", "lemon", "mango", "nectarine", "orange", "papaya", "quince", "raspberry",
+        "strawberry", "tangerine", "ugli", "vanilla", "watermelon", "apricot", "blueberry",
+        "cantaloupe", "dragonfruit", "eggplant", "fig", "guava", "huckleberry", "jalapeno",
+        "kumquat", "lime", "melon", "nectar", "olive", "peach", "pear", "plum", "quinoa",
+        "rhubarb", "spinach", "tomato", "turnip", "zucchini", "artichoke", "broccoli",
+        "carrot", "daikon", "endive", "fennel", "garlic", "horseradish", "jalapeno", 
+        "kale", "leek", "mushroom", "navy", "onion", "parsley", "quinoa", "radish",
+        "squash", "thyme", "ugli", "veggie", "watercress", "yam", "zucchini", "acorn",
+        "basil", "cabbage", "dill", "eggplant", "fennel", "ginger", "haricot", "iceberg",
+        "jicama", "kohlrabi", "lima", "mint", "nutmeg", "okra", "pepper", "quash",
+        "rosemary", "sage", "tarragon", "upland", "vinegar", "wasabi", "xanadu", 
+        "yarrow", "zest", "toy", "dinner", "dog", "cat", "rabbit", "computer"
+    ]
+    myRandomWord = words[random.randint(0, len(words) - 1)]  # Fix: adjusted random range
     myWordSplit = list(myRandomWord)
     return myWordSplit
 
-def findIndex(array,target):
+# Getting an index
+def findIndex(array, target):
     indexes = []
     for index, char in enumerate(array):
         if char == target:
             indexes.append(index)
     return indexes
 
-def updateHiddenWord(guess,word,state):
+def updateHiddenWord(guess, word, state):
     wordLocations = []
     if guess in word:
-        wordLocations = findIndex(word,guess)
+        wordLocations = findIndex(word, guess)
         for i in wordLocations:
             state[i] = guess
     return state
 
 def displayProgress(state):
-    print(state)
+    print(" ".join(state))  # Fix: join the list elements with spaces for readability
 
-def countIncorrectGuesses(state,incorrectAttempts):
-        print(state)
-        incorrectAttempts += 1
-        print(f"Incorrect number of guesses: {incorrectAttempts}")
-        return incorrectAttempts
+def countIncorrectGuesses(state, incorrectAttempts):
+    incorrectAttempts += 1
+    print(f"Incorrect guess. Try again. Incorrect number of guesses used: {incorrectAttempts}")
+    return incorrectAttempts
 
-def checkWin(state,attempts):
-        if "-" not in state and attempts < 6:
-            print("You Win!!")
-        elif attempts < 6:
-             print("Try Again")
+def checkWin(state, attempts):
+    if "-" not in state and attempts < 6:
+        print("You guessed all letters correctly. You Win!!")
+        return True 
+    elif attempts >= 6:
+        print("You lose. You used all of your guesses.")
+        return True
+    else:
+        return False
+
+# New function to see if player wants to play again
+def play_again():
+    while True:
+        play_again_input = input("Do you want to play again? (y/n): ").lower()  # Fix: correct handling of input
+        if play_again_input == 'y':
+            return True
+        elif play_again_input == 'n':
+            print("Thank you for playing. See ya!")
+            return False
         else:
-             print("You Lose")
+            print("Invalid input. Please enter 'y' for yes or 'n' for no.")
 
+# Validation for valid letter input
+def is_valid_letter(guess):
+    if len(guess) == 1 and guess in string.ascii_letters:
+        return True
+    return False
+
+# The main function of the game
 def initializeGame():
-    gameWord = getWord()
-    incorrectAttempts = 0
-    state = []
-    for i in gameWord:
-        state.append("-")
-    displayProgress(state)
-    while "-" in state and incorrectAttempts < 6:
-        guess = input("Input a letter to guess: ")
-        if guess in gameWord:
-            updateHiddenWord(guess,gameWord,state)
-            print(state)
-        else:
-            incorrectAttempts = countIncorrectGuesses(state,incorrectAttempts)
-            print(incorrectAttempts)
-        checkWin(state,incorrectAttempts)
-initializeGame()
+    while True:  # Game loop to start a new game
+        welcome_message()  # Display the welcome message
+        gameWord = getWord()
+        incorrectAttempts = 0
+        state = ["-" for _ in gameWord]  # Initialize state with underscores
+        displayProgress(state)
+
+        while "-" in state and incorrectAttempts < 6:
+            guess = input("Input a letter to guess: ").lower()
+
+            # Check if the guess is a valid letter
+            if not is_valid_letter(guess):
+                print("Invalid input. Please enter a letter from the English alphabet.")
+                continue
+
+            if guess in gameWord:
+                updateHiddenWord(guess, gameWord, state)
+                displayProgress(state)
+            else:
+                incorrectAttempts = countIncorrectGuesses(state, incorrectAttempts)
+
+            if checkWin(state, incorrectAttempts):
+                break  # Exit inner loop if the player wins or loses
+
+        # Ask if the player wants to play again after winning or losing
+        if not play_again():
+            break  # Exit the game loop if the player chooses not to play again
+
+# Start the game
+initializeGame()  # Fix: placed function call outside the function definition
