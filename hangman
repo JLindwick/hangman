@@ -1,0 +1,38 @@
+import random
+
+def getWord():
+    words = [
+    "apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew",
+    "kiwi", "lemon", "mango", "nectarine", "orange", "papaya", "quince", "raspberry",
+    "strawberry", "tangerine", "ugli", "vanilla", "watermelon", "apricot", "blueberry",
+    "cantaloupe", "dragonfruit", "eggplant", "fig", "guava", "huckleberry", "jalapeno",
+    "kumquat", "lime", "melon", "nectar", "olive", "peach", "pear", "plum", "quinoa",
+    "rhubarb", "spinach", "tomato", "turnip", "zucchini", "artichoke", "broccoli",
+    "carrot", "daikon", "endive", "fennel", "garlic", "horseradish", "jalapeno", 
+    "kale", "leek", "mushroom", "navy", "onion", "parsley", "quinoa", "radish",
+    "squash", "thyme", "ugli", "veggie", "watercress", "yam", "zucchini", "acorn",
+    "basil", "cabbage", "dill", "eggplant", "fennel", "ginger", "haricot", "iceberg",
+    "jicama", "kohlrabi", "lima", "mint", "nutmeg", "okra", "pepper", "quash",
+    "rosemary", "sage", "tarragon", "upland", "vinegar", "wasabi", "xanadu", 
+    "yarrow", "zest", "toy", "dinner","dog","cat", "rabbit", "computer"
+]
+    myRandomWord = words[random.randint(0,99)]
+    myWordSplit = list(myRandomWord)
+    return myWordSplit
+
+def updateGuess(guess,word,state):
+    if guess in word:
+        myGuessPosition = word.index(guess)
+        state[myGuessPosition] = guess
+    return state
+
+def hangmanGame():
+    gameWord = getWord()
+    state = []
+    for i in gameWord:
+        state.append("-")
+    print(state)
+    guess = input("Input a letter to guess: ")
+    updateGuess(guess,gameWord,state)
+    print(state)
+hangmanGame()
