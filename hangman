@@ -43,8 +43,10 @@ def countIncorrectGuesses(state,incorrectAttempts):
         print(f"Incorrect number of incorrect guesses: {incorrectAttempts}")
 
 def checkWin(state,attempts):
-        if "-" not in state:
-            print(f"You Win!!")
+        if "-" not in state and attempts < 6:
+            print("You Win!!")
+        else:
+             print("You loose")
 
 def initializeGame():
     gameWord = getWord()
