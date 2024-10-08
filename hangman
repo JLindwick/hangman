@@ -45,8 +45,10 @@ def countIncorrectGuesses(state,incorrectAttempts):
 def checkWin(state,attempts):
         if "-" not in state and attempts < 6:
             print("You Win!!")
+        elif attempts < 6:
+             print("Try Again")
         else:
-             print("You loose")
+             print("You Lose")
 
 def initializeGame():
     gameWord = getWord()
